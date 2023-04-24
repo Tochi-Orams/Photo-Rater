@@ -1,0 +1,937 @@
+@import './theme-variables.scss';
+@import './accent-variables.scss';
+
+/* General Styling ____________________________________________________________*/
+main {
+    height: 100vh;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('faintTxt');
+    }
+}
+body {
+    overflow: hidden;
+}
+
+/* Button Styling _____________________________________________________________*/
+.lgButton {
+    display: inline-block;
+    height: 50px;
+    width: 250px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border: none;
+    cursor:pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include accentuate($accents) {
+        background: accented('mainColor');
+        color: accented('txt');
+    }
+}
+
+/* Navigation Styling __________________________________________________________*/
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 3vw;
+}
+.midNav {
+    max-width: 800px;
+    display: flex;
+    margin: auto;
+    z-index: 200;
+}
+.navSection {
+    z-index: 99;
+}
+.home {
+    z-index: 200;
+}
+.navItem {
+    text-decoration: none;
+    font-size: 1.8rem;
+    font-weight: bold;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+.navItem:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.navIcon {
+    font-size: 2.2rem;
+    z-index: 99;
+}
+.pDrop {
+    position: absolute;
+    right: -7.5%;
+    width: 5px;
+    height: 50px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 230px;
+    padding: 4px 0 0 12px;
+    text-align: center;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.pDrop:hover {
+    opacity: 1;
+    right: 2%;
+    width: 230px;
+    height: 227px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#UN {
+    width: 300px;
+    display: flex;
+    text-align: center;
+}
+#UN h2 {
+    // position: absolute;
+    // left: 0%;
+    width: 0;
+    opacity: 0;
+    padding-left: 1.5rem;
+    text-overflow: ellipsis;
+    margin: auto 0;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+#UN:hover h2 {
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.pDrop:hover #UN h2 {
+    opacity: 1;
+    // left: 35%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#pOptions {
+    opacity: 0;
+    width: 220px;
+    margin: 1.6rem 0 5px 0;
+    padding-top: 0.6rem;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('faintTxt');
+    }
+}
+.pDrop:hover #pOptions {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+.pD {
+    margin-bottom: 5px;
+}
+.pButton {
+    display: inline-block;
+    height: 30px;
+    width: 210px;
+    border-radius: 10px;
+    font-size: 1rem;
+    border: none;
+    cursor:pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: none;
+        color: themed('txt');
+    }
+}
+.pButton:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('contrast');
+    }
+}
+.logOut {
+    display: inline-block;
+    margin-top: 0.6rem;
+    height: 30px;
+    width: 210px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor:pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include accentuate($accents) {
+        border: 1px solid accented('mainColor');
+        background: none;
+        color: accented('mainColor');
+    }
+}
+.logOut:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include accentuate($accents) {
+        background: accented('mainColor');
+        color: accented('txt');
+    }
+}
+
+/* Search ______________________________________________________________*/
+.pageContents {
+    filter: blur(0px);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.pageContents.active {
+    filter: blur(10px);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.navForm {
+    margin: 0 8vw;
+    width: 350px;
+}
+.srchContainer {
+    text-align: center;
+    z-index: 120;
+}
+#mag {
+    padding: 10px;
+}
+#search {
+    padding: 10px;
+    text-align: center;
+    height: 20px;
+    border-radius: 50px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('contrast');
+        border: 1px solid themed('contrast');
+    }
+}
+#search:focus {
+    text-align: left;
+    padding: 10px 10px 10px 50px;
+    outline: none;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('Search');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#search:focus::placeholder {
+    opacity: 0;
+}
+.srchLabel {
+    position: absolute;
+    right: 1012px;
+    top: 22px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+#search:focus + .srchLabel {
+    right: 1032px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.overlay {
+    visibility: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: black;
+    z-index: -10;
+    opacity: 0;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(30px);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.overlay.active {
+    visibility: visible;
+    opacity: 0.8;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#x {
+    font-size: 1rem;
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    top: 17%;
+    right: 3.3%;
+    cursor: pointer;
+}
+.searchTxt {
+    visibility: hidden;
+    position: fixed;
+    width: 50%;
+    height: 650px;
+    top: 15%;
+    left: 10%;
+    opacity: 0;
+    z-index: 90;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.searchTxt h1 {
+    height: 2.5rem;
+    padding-bottom: 2rem;
+    white-space: wrap;
+    overflow: hidden;
+    @include themify($themes) {
+        border-bottom: 1px solid themed('contrast');
+    }
+}
+.filterOptions {
+    position: fixed;
+    width: 15%;
+    height: 500px;
+    top: 15%;
+    right: 10%;
+    margin-right: 100px;
+}
+.filterOptions h3 {
+    color: #ffffff;
+}
+.rt {
+    margin-left: 20px;
+}
+.bt {
+    margin-top: 2rem;
+}
+.filterSection {
+    margin-top: 1rem;
+    padding-bottom: 2rem;
+    @include themify($themes) {
+        border-bottom: 1px solid themed('contrast');
+    }
+}
+#filtHead {
+    padding-bottom: 2rem;
+}
+.filter {
+    height: 30px;
+    width: 110px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    cursor:pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+.filter.active {
+    @include accentuate($accents) {
+        background: accented('mainColor');
+        color: accented('txt');
+    }
+}
+.searchTxt.active {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#term {
+    color: #ffffff;
+}
+
+/* Home Page Styling ________________________________________________________*/
+#trend:checked ~ .switch {
+    transform: translateX(0%);
+}
+#recent:checked ~ .switch {
+    transform: translateX(94%);
+}
+#trend:checked ~ .switch .toggle h2:nth-of-type(1) {
+    opacity: 1;
+}
+#recent:checked ~ .switch .toggle h2:nth-of-type(2) {
+    opacity: 1;
+}
+.galleryBox {
+    position: absolute;
+    display: flex;
+    top: calc(55% - 300px);
+    left: calc(50% - 650px);
+    width: 1300px;
+    height: 600px;
+    border-radius: 20px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+
+/* Profile Page Styling _____________________________________________________ */
+.profileBox {
+    position: absolute;
+    display: flex;
+    top: calc(55% - 375px);
+    left: calc(50% - 35vw);
+    width: 70vw;
+    height: 750px;
+    border-radius: 20px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+.profSections {
+    display: flex;
+    padding: 0;
+    height: 45px;
+    margin: 2rem auto 1rem auto;
+    list-style: none;
+    font-size: 1.5rem;
+    @include themify($themes) {
+        color: themed('contrast');
+        border-bottom: 1px solid themed('contrast');
+    }
+}
+#OV, #AC, #ST {
+    width: 100px;
+    text-align: center;
+    -webkit-transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin: 0 3vw;
+}
+.profSections li:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+#OV.active, #AC.active, #ST.active {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include accentuate($accents) {
+        border-bottom: 3px solid accented('mainColor');
+    }
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+
+/* Upload Page Styling _______________________________________________________ */
+.uploadBox {
+    position: absolute;
+    top: calc(55% - 350px);
+    left: calc(50% - 31.5vw);
+    width: 63vw;
+    height: 700px;
+    border-radius: 20px;
+    // box-shadow: 0 50px 300px #eafcff;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#upWindow {
+    display: flex;
+    border-radius: 20px;
+    width: 59vw;
+    height: 310px;
+    margin: 2vh auto;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        border: 1px solid themed('contrast');
+    }
+}
+#dotBorder {
+    border-radius: 20px;
+    width: 57vw;
+    height: 273px;
+    margin: auto auto;
+    text-align: center;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        border: 3px dashed themed('contrast');
+        color: themed('txt');
+    }
+}
+#dotBorder h3, #dotBorder h2 {
+    margin: 0.5rem;
+}
+#upload {
+    padding: 1.8rem 0 0.5rem 0;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+#title {
+    width: 500px;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#hashtags {
+    display: flex;
+    margin: auto;
+    text-align: left;
+    width: 500px;
+    height: 70px;
+    border-radius: 10px;
+    padding: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+.HTInput {
+    margin: 0;
+    width: 100%;
+    font-size: large;
+    height: 70px;
+}
+.HTInput:focus {
+    outline: none;
+}
+#tags {
+    width: 350px;
+}
+.tagButton {
+    display: inline-flex;
+    font-size: medium;
+    height: 30px;
+    padding: 0 8px;
+    margin-right: 12px;
+    border-radius: 5px;
+    @include themify($themes) {
+        background: themed('faintTxt');
+        color: themed('txt');
+    }
+}
+.tagButton p {
+    margin: auto;
+    padding-bottom: 2px;
+}
+.deleteTag {
+    display: inline-block;
+    padding-left: 12px;
+    font-size: medium;
+    border: none;
+    cursor:pointer;
+    background: none;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+.tagButton:hover {
+    @include themify($themes) {
+        background: themed('contrast');
+    }
+}
+.tagButton:hover .deleteTag {
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.uploadForm h2 {
+    margin: 1rem 0 1rem 0;
+    text-align: center;
+}
+.uploadForm {
+    text-align: center;
+}
+.uButton {
+    margin: 1.5rem auto 0 auto;
+    text-align: center;
+}
+
+/* Rating Page Styling ________________________________________________________*/
+.ratingBox {
+    position: absolute;
+    display: flex;
+    top: calc(55% - 300px);
+    left: calc(50% - 600px);
+    width: 1200px;
+    height: 600px;
+    border-radius: 20px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+.picFrame {
+    border-radius: 20px;
+    width: 650px;
+    margin: 2rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        border: 1px solid themed('contrast');
+    }
+}
+.order {
+    position: absolute;
+    top: 12%;
+    left: calc(50% - 200px);
+    display: flex;
+    margin: 0 auto;
+    width: 400px;
+    height: 70px;
+    border-radius: 35px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+        color: themed('txt');
+    }
+}
+.order input {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+}
+.order label {
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.switch {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    padding: 3px;
+    z-index: 5;
+    -webkit-transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
+}
+.toggle {
+    border-radius: 35px;
+    height: 100%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include accentuate($accents) {
+        background: accented('mainColor');
+    }
+}
+.toggle h2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    display: block;
+    will-change: opacity;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+    @include accentuate($accents) {
+        color: accented('txt');
+    }
+}
+#newest:checked ~ .switch {
+    transform: translateX(0%);
+}
+#shuffle:checked ~ .switch {
+    transform: translateX(94%);
+}
+.order input:nth-of-type(1):checked ~ .switch .toggle h2:nth-of-type(1) {
+    opacity: 1;
+}
+.order input:nth-of-type(2):checked ~ .switch .toggle h2:nth-of-type(2) {
+    opacity: 1;
+}
+
+/* Rating Form Styling ________________________________________________ */
+.rateForm {
+    margin: auto;
+    padding: 4rem 5rem 5rem 3rem;
+}
+.star {
+    padding: 0 2px;
+    cursor: pointer;
+}
+.score {
+    display: flex;
+    flex-direction: row;
+    height: 2rem;
+}
+.scoreVis {
+    display: flex;
+    padding-left: 2rem;
+    margin: auto 0;
+}
+.numScore {
+    margin: 0;
+}
+.outOfFive {
+    margin: auto 0;
+    padding-right: 2rem;
+}
+.emoji {
+    position: absolute;
+    right: 7.5%;
+    font-size: 2rem;
+    line-height: 2rem;
+    margin: auto 0;
+
+}
+
+.emojiAnim-enter {
+    right: 0%;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+.emojiAnim-enter-active {
+    right: 7.5%;
+    opacity: 1;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+.emojiAnim-exit {
+    right: 7.5%;
+    opacity: 1;
+}
+.emojiAnim-exit-active {
+    right: 0%;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+
+.chars {
+    margin: 0;
+}
+.oneLine {
+    display: flex;
+    padding: 3rem 0 1rem 0;
+    flex-wrap: nowrap;
+}
+#noMargin {
+    margin: 0;
+}
+#comment {
+    width: 340px;
+    font-size: large;
+    height: 110px;
+    border-radius: 10px;
+    padding: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#rateHead {
+    margin-top: 0;
+}
+#formButtons {
+    display: flex;
+    justify-content: space-between;
+}
+.sButton {
+    margin: 3rem auto 0 0;
+    text-align: center;
+}
+#skip {
+    margin: 3rem 0 0 auto;
+    height: 50px;
+    width: 80px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border: none;
+    cursor:pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include accentuate($accents) {
+        background: accented('mainColor');
+        color: accented('txt');
+    }
+}
+
+/* Theme Button Styling _____________________________________________________*/
+.themeSwitch {
+    position: absolute;
+    bottom: 0%;
+    display: inline-block;
+    background-color: transparent;
+    height: 120px;
+    width: 120px;
+    font-size: 3rem;
+    border: none;
+    cursor:pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('faintTxt');
+    }
+}
+/* Accent Buttons Styling ____________________________________________________*/
+.accentSwitch {
+    z-index:10;
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    width: 13px;
+    height: 13px;
+    border-radius: 20px;
+    margin: 52.5px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+    }
+}
+.palette:hover .accentSwitch {
+    bottom: 0%;
+    right: 0%;
+    width: 70px;
+    height: 615px;
+    margin: 25px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.aOpt {
+    z-index: 50;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 7.5px;
+    bottom: 0%;
+    right: 0%;
+    margin: 52.5px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+    }
+}
+.palette:hover .aOpt {
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    margin: 45px;
+}
+.current {
+    z-index: 60;
+    @include accentuate($accents) {
+        background: accented('mainColor');
+    }
+}
+.palette:hover .current {
+    visibility: visible;
+    height: 50px;
+    width: 50px;
+    margin: 35px;
+    border-radius: 25px;
+}
+.palette:hover .gry {
+    bottom: 55px;
+    background-color: #5B738B;
+}
+.palette:hover .rd {
+    bottom: 105px;
+    background-color: #EE3939;
+}
+.palette:hover .mngo {
+    bottom: 155px;
+    background-color: #E76500;
+}
+.palette:hover .ylo {
+    bottom: 205px;
+    background-color: #FFEE00;
+}
+.palette:hover .grn {
+    bottom: 255px;
+    background-color: #36A41D;
+}
+.palette:hover .tl {
+    bottom: 305px;
+    background-color: #049F9A;
+}
+.palette:hover .blu {
+    bottom: 355px;
+    background-color: #1B90FF;
+}
+.palette:hover .indgo {
+    bottom: 405px;
+    background-color: #7858FF;
+}
+.palette:hover .pnk {
+    bottom: 455px;
+    background-color: #F31DED;
+}
+.palette:hover .rsb {
+    bottom: 505px;
+    background-color: #Fa4F96;
+}
+.palette:hover .blk {
+    bottom: 555px;
+    background-color: #000000;
+}

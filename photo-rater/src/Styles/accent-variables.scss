@@ -1,0 +1,80 @@
+$accents: (
+    gry: (
+        mainColor: #5B738B,
+        glow: rgba(91, 115, 139, 0.3),
+        txt: #000000,
+    ),
+    rd: (
+        mainColor: #EE3939,
+        glow: rgba(238, 57, 57, 0.3),
+        txt: #000000,
+    ),
+    mngo: (
+        mainColor: #E76500,
+        glow: rgba(231, 101, 0, 0.3),
+        txt: #000000,
+    ),
+    grn: (
+        mainColor: #36A41D,
+        glow: rgba(54, 164, 29, 0.3),
+        txt: #000000,
+    ),
+    tl: (
+        mainColor: #049F9A,
+        glow: rgba(4, 159, 154, 0.3),
+        txt: #000000,
+    ),
+    blu: (
+        mainColor: #1B90FF,
+        golf: rgba(27, 144, 255, 0.3),
+        txt: #000000,
+    ),
+    indgo: (
+        mainColor: #7858FF,
+        glow: rgba(120, 88, 255, 0.3),
+        txt: #000000,
+    ),
+    pnk: (
+        mainColor: #F31DED,
+        glow: rgba(243, 29, 237, 0.3),
+        txt: #000000,
+    ),
+    rsb: (
+        mainColor: #Fa4F96,
+        glow: rgba(250, 79, 150, 0.3),
+        txt: #000000,
+    ),
+    ylo: (
+        mainColor: #FFEE00,
+        glow: rgba(255, 238, 0, 0.3),
+        txt: #000000,
+    ),
+    blk: (
+        mainColor: #000000,
+        glow: rgba(0, 0, 0, 0.3),
+        txt: #ffffff,
+    ),
+);
+
+@mixin accentuate($accents) {
+    @each $accent, $map in $accents {
+        .accent-#{$accent} & {
+            $accent-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($accents, $accent), '#{$key}');
+                $accent-map: map-merge(
+                    $accent-map,
+                    (
+                        $key: $value,
+                    )
+                ) !global;
+            }
+            @content;
+            $accent-map: null !global;
+        }
+    }
+}
+
+@function accented($key) {
+    @return map-get($accent-map, $key)
+}
