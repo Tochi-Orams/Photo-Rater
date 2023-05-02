@@ -55,7 +55,7 @@ const Search: FC = () => {
 
     const cats = (idx: number) => {
         const catOps = [
-            document.getElementById("hashtags"),
+            document.getElementById("htags"),
             document.getElementById("users"),
         ]
         if (catOps[idx]?.classList.contains("active")) {
@@ -114,7 +114,7 @@ const Search: FC = () => {
         setRating("")
         setRecency("")
         const frs = [
-            document.getElementById("hashtags"),
+            document.getElementById("htags"),
             document.getElementById("users"),
             document.getElementById("ratingUp"),
             document.getElementById("ratingDown"),
@@ -138,7 +138,7 @@ const Search: FC = () => {
                     <h2 id="filtHead">Search Filters</h2>
                     <div className="filterSection">
                         <h3>Search Type</h3>
-                        <button className="filter" type="button" id="hashtags" onClick={() => cats(0)}>Hashtags</button>
+                        <button className="filter" type="button" id="htags" onClick={() => cats(0)}>Hashtags</button>
                         <button className="filter rt" type="button" id="users" onClick={() => cats(1)}>Users</button>
                     </div>
                     <div className="filterSection">

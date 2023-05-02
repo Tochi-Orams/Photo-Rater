@@ -129,7 +129,7 @@ const UploadPage: FC = () => {
                         />
                     </div>
                 </FormControl>
-                <button aria-label="Submit" type="submit" className="lgButton uButton">
+                <button aria-label="Submit" type="submit" className="Button lgButton uButton">
                     Upload
                 </button>
             </form>

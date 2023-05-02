@@ -1,5 +1,6 @@
 import { FC, useContext, useEffect } from 'react';
 import ProfileContext from '../Context/ProfileContext';
+import Settings from './Settings';
 
 const ProfilePage: FC = () => {
     const {pSection, setPSection} = useContext(ProfileContext)
@@ -33,6 +34,14 @@ const ProfilePage: FC = () => {
                 <li id="AC" onClick={() => setPSection("activity")}>Activity</li>
                 <li id="ST" onClick={() => setPSection("settings")}>Settings</li>
             </ul>
+            <section className="settingsContents">
+                {pSection === "overview" ?
+                <div></div>
+                : pSection === "activity" ?
+                <div></div>
+                :
+                <Settings />}
+            </section>
 
         </article>
     )

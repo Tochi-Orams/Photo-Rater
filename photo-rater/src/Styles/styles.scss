@@ -16,13 +16,11 @@ body {
 }
 
 /* Button Styling _____________________________________________________________*/
-.lgButton {
+.Button {
     display: inline-block;
-    height: 50px;
-    width: 250px;
     border-radius: 5px;
-    font-weight: bold;
     font-size: 1.5rem;
+    font-weight: bold;
     border: none;
     cursor:pointer;
     -webkit-transition: all 0.3s ease;
@@ -31,6 +29,10 @@ body {
         background: accented('mainColor');
         color: accented('txt');
     }
+}
+.lgButton {
+    height: 50px;
+    width: 250px;
 }
 
 /* Navigation Styling __________________________________________________________*/
@@ -402,7 +404,8 @@ nav {
 /* Profile Page Styling _____________________________________________________ */
 .profileBox {
     position: absolute;
-    display: flex;
+    display: block;
+    text-align: center;
     top: calc(55% - 375px);
     left: calc(50% - 35vw);
     width: 70vw;
@@ -417,7 +420,7 @@ nav {
     }
 }
 .profSections {
-    display: flex;
+    display: inline-flex;
     padding: 0;
     height: 45px;
     margin: 2rem auto 1rem auto;
@@ -454,6 +457,312 @@ nav {
         color: themed('txt');
     }
 }
+.settingsContents {
+    margin: 2rem 4rem 4rem 4rem;
+    text-align: left;
+}
+
+/* Settings Styling __________________________________________________________ */
+#stngs {
+    display: flex;
+}
+#settingsList {
+    margin: auto 0;
+    height: auto;
+    padding-bottom: 4rem;
+    width: 150px;
+    list-style: none;
+    font-size: 1.25rem;
+    @include themify($themes) {
+        color: themed('contrast');
+        // border-right: 1px solid themed('faintTxt');
+    }
+}
+#settingsList li {
+    margin: 1rem 0;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+#settingsList li:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.accSet {
+    margin-left: 5rem;
+    width: calc(420px + 4rem);
+    margin: auto;
+}
+.DP {
+    left: calc(50% - 50px);
+    position: absolute;
+    width: 100px;
+    border-radius: 50px;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+    }
+}
+#changeDP {
+    left: calc(50% - 50px);
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    opacity: 0;
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    border: 1px solid rgba($color: #000000, $alpha: 0.5);
+    border-radius: 50px;
+    color: #ffffff;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#changeDP:hover {
+    opacity: 1;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#camIcon {
+    font-size: 1.5rem;
+    margin: 20px 0 0 0;
+}
+.profDetails {
+    margin-top: 130px;
+}
+#names {
+    display: flex;
+    margin-bottom: 1.5rem;
+}
+.profLabel {
+    margin-bottom: 5px;
+}
+#FN, #LN, #Web {
+    font-size: medium;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#FN, #LN {
+    width: 200px;
+    padding: 5px;
+}
+#FN {
+    margin-right: 2rem;
+}
+#Web {
+    width: calc(400px + 2rem);
+    padding: 5px 10px;
+}
+#Bio {
+    width: calc(400px + 2rem);
+    height: 80px;
+    padding: 10px;
+    font-size: medium;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+.profChars {
+    margin: 0;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+#Bio:focus ~ .pfofChars {
+    opacity: 1;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+#profSocials {
+    margin-top: 2rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        border-top: 1px solid themed('faintTxt');
+    }
+}
+#socIcons {
+    display: flex;
+}
+.socIcon {
+    font-size: 2rem;
+    margin: auto 1.5rem 0 0;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+#addSoc, #profEdit {
+    position: absolute;
+    opacity: 0.5;
+    left: 47%;
+    margin: auto 0 auto 1rem ;
+    font-size: 2rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('faintTxt');
+    }
+}
+#addSoc {
+    opacity: 0;
+}
+#addSoc.active {
+    left: 47%;
+    opacity: 1;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#profEdit.active {
+    left: 52%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#setCon {
+    text-align: center;
+    margin: auto 0;
+    padding-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 150px;
+    height: 150px;
+}
+.setConf {
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('faintTxt');
+    }
+}
+.setConf:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+
+// socials window
+.socWindow {
+    position: absolute;
+    text-align: center;
+    top: 120%;
+    left: calc(50% - 250px);
+    width: 500px;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: 65;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+        background: themed("innerBkg");
+    }
+}
+.socWindow.active {
+    top: calc(50% - 250px);
+    margin: auto;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.socOver {
+    position: fixed;
+    top: -500px;
+    left: -500px;
+    width: 200vw;
+    height: 200vh;
+    overflow: hidden;
+    opacity: 0;
+    background: #000000;
+    z-index: 60;
+    pointer-events: none;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.socOver.active {
+    opacity: 0.8;
+    pointer-events: all;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#logoDiv {
+    margin-bottom: 1.5rem;
+}
+.socIcon2 {
+    font-size: 3rem;
+    margin: auto;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+#smX {
+    position: absolute;
+    right: 3%;
+    top: 4%;
+    text-align: right;
+    font-size: 1rem;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+#socWinHead {
+    margin-top: 1.5rem;
+}
+.profLabel2 {
+    margin-bottom: 5px;
+    text-align: center !important;
+}
+#url, #site {
+    font-size: medium;
+    border-radius: 10px;
+    width: 250px;
+    padding: 5px 10px;
+    margin-bottom: 1.5rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#winButs {
+    margin: auto;
+    display: flex;
+    width: 180px;
+    justify-content: space-around;
+}
+.medButton {
+    margin: .5rem 0 0 0;
+    height: 40px;
+    width: 80px;
+}
+.trashButton {
+    margin: .5rem 0 0 0;
+    height: 40px;
+    width: 50px;
+}
 
 /* Upload Page Styling _______________________________________________________ */
 .uploadBox {
@@ -463,7 +772,6 @@ nav {
     width: 63vw;
     height: 700px;
     border-radius: 20px;
-    // box-shadow: 0 50px 300px #eafcff;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     @include themify($themes) {
@@ -762,6 +1070,14 @@ nav {
 
 .chars {
     margin: 0;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+#comment:focus .chars {
+    opacity: 1;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 .oneLine {
     display: flex;
@@ -796,21 +1112,10 @@ nav {
     margin: 3rem auto 0 0;
     text-align: center;
 }
-#skip {
+.skip {
     margin: 3rem 0 0 auto;
     height: 50px;
     width: 80px;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 1.5rem;
-    border: none;
-    cursor:pointer;
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-    @include accentuate($accents) {
-        background: accented('mainColor');
-        color: accented('txt');
-    }
 }
 
 /* Theme Button Styling _____________________________________________________*/

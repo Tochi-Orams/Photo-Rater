@@ -189,10 +189,10 @@ const RatingForm: FC = (): JSX.Element => {
                     <p className="chars">{180-formik.values.comment.length} characters remaining</p>
                 </FormControl>
                 <div id="formButtons">
-                    <button aria-label="Submit" type="submit" className="lgButton sButton">
+                    <button aria-label="Submit" type="submit" className="Button lgButton sButton">
                         Submit Rating
                     </button>
-                    <button id="skip" onClick={skip}>
+                    <button className="Button skip" onClick={skip}>
                         Skip
                     </button>
                 </div>
