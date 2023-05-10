@@ -643,20 +643,30 @@ nav {
     width: 150px;
     height: 150px;
 }
-.setConf {
-    cursor: pointer;
+.saveSet, .revertSet {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     @include themify($themes) {
         color: themed('faintTxt');
     }
 }
-.setConf:hover {
+.saveSet.active, .revertSet.active {
+    cursor: pointer;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     @include themify($themes) {
         color: themed('contrast');
     }
+}
+.saveSet.active:hover, .revertSet.active:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.saveSet.active:hover {
+    color: green;
+}
+.revertSet.active:hover {
+    color: red;
 }
 
 // socials window
@@ -1116,6 +1126,211 @@ nav {
     margin: 3rem 0 0 auto;
     height: 50px;
     width: 80px;
+}
+
+/* Login Page Styling _____________________________________________________*/
+#logSec {
+    padding-top: 2rem;
+    margin: 0 auto;
+    width: 350px;
+    display: flex;
+    justify-content: space-around;
+}
+#logSec h2 {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+#LNG, #Cr8 {
+    cursor: pointer;
+}
+#LNG.active, #Cr8.active {
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+#LNG:hover, #Cr8:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.loginBox {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    top: calc(50% - 300px);
+    left: calc(50% - 200px);
+    width: 400px;
+    height: 600px;
+    border-radius: 20px;
+    -webkit-transition: all 0.3s ease 0.3s;
+    transition: all 0.3s ease 0.3s;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+.loginBox.active {
+    height: 670px;
+    top: calc(50% - 315px);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.loginBox.active .eye {
+    bottom: 41.2%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.loginBox h2 {
+    margin-bottom: 1rem;
+}
+.loginBox img {
+    margin: 2rem auto 0 auto;
+    height: 100px;
+    width: 100px;
+}
+.logLabel {
+    margin: 0 0 5px 40px;
+}
+#USN, #PWD, #PWD2 {
+    width: 300px;
+    font-size: large;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    padding: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+.eye {
+    cursor: pointer;
+    position: absolute;
+    bottom: 34.3%;
+    right: 14%;
+    -webkit-transition: all 0.3s ease 0.3s;
+    transition: all 0.3s ease 0.3s;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+.eye1 {
+    cursor: pointer;
+    position: absolute;
+    bottom: 28.8%;
+    right: 14%;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+.eye:hover, .eye1:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.eye.active, .eye1.active {
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+
+.confPass {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    -webkit-transition: max-height 0.3s ease 0.3s, opacity 0.3s ease;
+    transition: max-height 0.3s ease 0.3s, opacity 0.3s ease;
+}
+.confPass.active {
+    opacity: 1;
+    max-height: 100px;
+    -webkit-transition: max-height 0.3s ease, opacity 0.3s ease 0.3s;
+    transition: max-height 0.3s ease, opacity 0.3s ease 0.3s;
+
+}
+.logIn, .signUp {
+    pointer-events: none;
+    margin-top: 2rem;
+    height: 50px;
+    width: 320px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.signUp {
+    opacity: 0;
+    position: absolute;
+    bottom: 16.1%;
+    left: calc(50% - 160px);
+    -webkit-transition: opacity 0s ease;
+    transition: opacity 0s ease;
+}
+.logIn.active {
+    pointer-events: all;
+    opacity: 1;
+}
+.signUp.active {
+    pointer-events: all;
+    opacity: 1;
+    bottom: 12.1%;
+    -webkit-transition: opacity 0.3s ease 0.3s;
+    transition: opacity 0.3s ease 0.3s;
+}
+#forgot {
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    margin-top: 2rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+#forgot.active {
+    opacity: 1;
+    -webkit-transition: all 0.3s ease 0.6s;
+    transition: all 0.3s ease 0.6s;
+}
+#guides {
+    opacity: 0;
+    height: 300px;
+    width: 500px;
+    position: absolute;
+    top: calc(50% - 50px);
+    left: 450px;
+    -webkit-transition: all 0.3s ease 0.6s;
+    transition: all 0.3s ease 0.6s;
+}
+#guides.active {
+    opacity: 1;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#guides p {
+    margin: 0 0 0 1rem;
+}
+.pValid {
+    display: flex;
+    line-height: 1rem;
+    margin-bottom: 2rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.pMatch {
+    margin-top: 4rem;
 }
 
 /* Theme Button Styling _____________________________________________________*/

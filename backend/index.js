@@ -1,23 +1,26 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-const app = express()
+const app = express();
 
-const db = mysql.createPool({
-    host: "127.0.0.1",
+const db = mysql.createConnection({
+    host: "localhost",
     user: "root",
     password: "Nzu_sQl__01!",
-    database: "PhotoRaterDB"
+    database: "photoraterdb",
 });
 
 app.get("/", (req, res) => {
 
-    const sqlInsert = "INSERT INTO users (UserName) VALUES ('Test_user');"
-    db.query(sqlInsert, (err, result) => {
-        res.send("hello worlds")
+    db.query("INSERT INTO users_table (UserName) VALUES (?)", ['Test_user'], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("hello Kamsi");
+        }
     })
 });
 
 app.listen(3001, () => {
-    console.log("running on port 3001")
+    console.log("running on port 3001");
 });

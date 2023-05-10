@@ -5,11 +5,13 @@ import { faInstagram, faFacebook, faTiktok, faLinkedin, faTwitter, faPinterest }
 import { FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IconName, IconPrefix, library } from "@fortawesome/fontawesome-svg-core";
+import { IconName, library } from "@fortawesome/fontawesome-svg-core";
+
+var isEqual = require('lodash.isequal');
 
 library.add(faInstagram, faFacebook, faTiktok, faLinkedin, faTwitter, faPinterest)
 
-const prof = {
+const prof: {Pic?: string, FN: string, LN: string, Bio: string, Web: string} = {
     Pic: "https://icons-for-free.com/iconfiles/png/512/person+user+icon-1320166085409390336.png",
     FN: "Firstname",
     LN: "Lastname",
@@ -35,7 +37,11 @@ const tempsoc = [
     },
 ]
 
-const Profile: FC = () => {
+interface ProfileProps {
+    setPChange(value: boolean): void
+}
+
+const Profile: FC<ProfileProps> = ({setPChange}) => {
     const [socials, setSocials] = useState(tempsoc)
     const [socEdit, setSocEdit] = useState([false, 0])
     const [socOp, setSocOp] = useState("select one")
@@ -60,6 +66,16 @@ const Profile: FC = () => {
             Web: Yup.string().matches(URL, "Enter a valid URL")
         })
     })
+
+    const comp = {...prof}
+    delete comp.Pic
+    useEffect(() => {
+        if (!isEqual(profFormik.values, comp)) {
+            setPChange(true)
+        } else {
+            setPChange(false)
+        }
+    }, [profFormik.values])
 
     const socFormik = useFormik({
         initialValues: {
@@ -235,7 +251,7 @@ const Profile: FC = () => {
                             </div>
                         ))}
                         {socials.map((item, i) => (
-                            <div className={`deleteSM delete${i}`} onClick={() => removeSM(i)}>
+                            <div key={i} className={`deleteSM delete${i}`} onClick={() => removeSM(i)}>
                                 -
                             </div>
                         ))}
@@ -253,7 +269,6 @@ const Profile: FC = () => {
                     </div>
                 </div>
             </form>
-
         </>
     )
 }
@@ -268,11 +283,27 @@ const Security: FC = () => {
 
 const Settings: FC = () => {
     const [setSec, setSetSec] = useState("profile")
+    const [pChange, setPChange] = useState(false)
 
     const acceptChange = (sec: string) => {
     }
     const cancelChange = (sec: string) => {
     }
+
+    const acc = document.querySelector(".saveSet") as HTMLElement
+    const rev = document.querySelector(".revertSet") as HTMLElement
+
+    useEffect(() => {
+        if (setSec === "profile") {
+            if (pChange) {
+                acc?.classList?.add("active")
+                rev?.classList?.add("active")
+            } else {
+                acc?.classList?.remove("active")
+                rev?.classList?.remove("active")
+            }
+        }
+    })
 
     return (
         <article id="stngs">
@@ -283,16 +314,16 @@ const Settings: FC = () => {
             </ul>
             <div className="accSet">
                 {setSec === "profile" ?
-                <Profile />
+                <Profile setPChange={setPChange} />
                 :
                 <div></div>}
             </div>
             <div id="setCon">
                 <div className="canAccept" onClick={() => acceptChange(setSec)}>
-                    <FontAwesomeIcon icon={faCircleCheck} size="3x" className="setConf" />
+                    <FontAwesomeIcon icon={faCircleCheck} size="3x" className="setConf saveSet" />
                 </div>
                 <div className="canAccept" onClick={() => cancelChange(setSec)}>
-                    <FontAwesomeIcon icon={faCircleXmark} size="3x" className="setConf" />
+                    <FontAwesomeIcon icon={faCircleXmark} size="3x" className="setConf revertSet" />
                 </div>
             </div>
         </article>
