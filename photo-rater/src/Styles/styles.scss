@@ -1,6 +1,11 @@
 @import './theme-variables.scss';
 @import './accent-variables.scss';
 
+/* Variables */
+$rouge: #850000;
+$alert-r: rgb(255, 195, 195);
+$alert-g: rgb(181, 255, 181);
+
 /* General Styling ____________________________________________________________*/
 main {
     height: 100vh;
@@ -38,6 +43,7 @@ body {
 /* Navigation Styling __________________________________________________________*/
 nav {
     display: flex;
+    position: relative;
     justify-content: space-between;
     padding: 1rem 3vw;
 }
@@ -76,7 +82,7 @@ nav {
 }
 .pDrop {
     position: absolute;
-    right: -7.5%;
+    left: 94.5%;
     width: 5px;
     height: 50px;
     overflow: hidden;
@@ -91,7 +97,8 @@ nav {
 }
 .pDrop:hover {
     opacity: 1;
-    right: 2%;
+    left: calc(97% - 220px);
+    padding-right: 2%;
     width: 230px;
     height: 227px;
     -webkit-transition: all 0.3s ease;
@@ -103,8 +110,6 @@ nav {
     text-align: center;
 }
 #UN h2 {
-    // position: absolute;
-    // left: 0%;
     width: 0;
     opacity: 0;
     padding-left: 1.5rem;
@@ -211,6 +216,7 @@ nav {
     width: 350px;
 }
 .srchContainer {
+    position: relative;
     text-align: center;
     z-index: 120;
 }
@@ -247,8 +253,8 @@ nav {
 }
 .srchLabel {
     position: absolute;
-    right: 1012px;
-    top: 22px;
+    left: 23%;
+    top: calc(50% - 18px);
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     @include themify($themes) {
@@ -256,7 +262,7 @@ nav {
     }
 }
 #search:focus + .srchLabel {
-    right: 1032px;
+    left: 20%;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     @include themify($themes) {
@@ -467,7 +473,7 @@ nav {
     display: flex;
 }
 #settingsList {
-    margin: auto 0;
+    margin: 191.5px 0;
     height: auto;
     padding-bottom: 4rem;
     width: 150px;
@@ -576,17 +582,25 @@ nav {
     }
 }
 .profChars {
-    margin: 0;
+    margin: 0 0 1rem;
     opacity: 0;
+    font-size: 0.8rem;
     -webkit-transition: opacity 0.3s ease;
     transition: opacity 0.3s ease;
 }
-#Bio:focus ~ .pfofChars {
+.profChars.active {
     opacity: 1;
-    -webkit-transition: opacity 0.3s ease;
-    transition: opacity 0.3s ease;
+}
+#editContainer {
+    display: flex;
+    height: 40px;
+    min-width: 40px;
+}
+#editContainer.active {
+    margin-left: 1.5rem;
 }
 #profSocials {
+    height: 8rem;
     margin-top: 2rem;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
@@ -607,11 +621,11 @@ nav {
         color: themed('txt');
     }
 }
+.socIcon.active {
+    margin-left: 1rem;
+}
 #addSoc, #profEdit {
-    position: absolute;
-    opacity: 0.5;
-    left: 47%;
-    margin: auto 0 auto 1rem ;
+    cursor: pointer;
     font-size: 2rem;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
@@ -620,18 +634,27 @@ nav {
     }
 }
 #addSoc {
+    pointer-events: none;
     opacity: 0;
+    z-index: 1;
+}
+#profEdit {
+    margin-left: -1.75rem;
+    z-index: 5;
+}
+#addSoc:hover, #profEdit:hover {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('contrast');
+    }
 }
 #addSoc.active {
-    left: 47%;
     opacity: 1;
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    pointer-events: all;
 }
 #profEdit.active {
-    left: 52%;
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    margin-left: 1.3rem;
 }
 #setCon {
     text-align: center;
@@ -666,7 +689,11 @@ nav {
     color: green;
 }
 .revertSet.active:hover {
-    color: red;
+    color: $rouge;
+}
+.saveSet.hidden, .revertSet.hidden {
+    pointer-events: none;
+    opacity: 0;
 }
 
 // socials window
@@ -726,6 +753,37 @@ nav {
         color: themed('txt');
     }
 }
+.deleteSM {
+    opacity: 0;
+    position: relative;
+    top: -85%;
+    left: -20%;
+    height: 18px;
+    width: 18px;
+    border-radius: 9px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('contrast');
+        color: themed('innerBkg');
+    }
+}
+.deleteSM.active {
+    margin-left: 1rem;
+    opacity: 1;
+    z-index: 20;
+    cursor: pointer;
+}
+.deleteSM.active:hover {
+    transform: scale(1.3);
+    background: $rouge;
+}
+.deleteSM h3 {
+    margin: 0;
+    position: relative;
+    top: -28%;
+    text-align: center;
+}
 #smX {
     position: absolute;
     right: 3%;
@@ -757,6 +815,9 @@ nav {
         border: 1px solid themed('contrast');
     }
 }
+#site {
+    width: 270px;
+}
 #winButs {
     margin: auto;
     display: flex;
@@ -768,10 +829,138 @@ nav {
     height: 40px;
     width: 80px;
 }
+.okay.disabled {
+    pointer-events: none;
+    @include themify($themes) {
+        background: themed('faintTxt');
+    }
+}
 .trashButton {
     margin: .5rem 0 0 0;
     height: 40px;
     width: 50px;
+}
+#SMAlert {
+    background-color: $alert-r;
+    position: absolute;
+    bottom: -100px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: solid 1px $rouge;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#SMAlert p {
+    padding: 0 1rem;
+    margin: 8px 0;
+}
+#SMAlert.active {
+    bottom: -18px;
+}
+/* Appearance Styling ________________________________________________________ */
+#themeForm {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    @include themify($themes) {
+        border-bottom: 1px solid themed('contrast');
+    }
+}
+#ltTheme, #dkTheme {
+    width: 2rem;
+    height: 2rem;
+    @include accentuate($accents) {
+        accent-color: accented('mainColor');
+    }
+}
+#themeOps {
+    display: flex;
+}
+#TH1, #TH2 {
+    position: relative;
+    margin: 0 2.5rem 1rem 0;
+}
+.tBox {
+    cursor: pointer;
+    height: 150px;
+    width: 200px;
+    margin-left: 1rem;
+    margin-bottom: -1.5rem;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+    }
+}
+.theBox {
+    text-align: center;
+    height: 130px;
+    width: 180px;
+    margin: 10px 10px 10px;
+    border-radius: 10px;
+}
+.theBox h3 {
+    margin: 0;
+    padding-top: 0.8rem;
+}
+.theBox p {
+    margin: 0;
+    padding: 5px 0 0.5rem;
+}
+.tButt {
+    margin-top: 0.6rem;
+    padding: 5px 10px;
+}
+.tBox1 {
+    background:  #f0f0f0;
+    color: black;
+}
+.tBox2 {
+    background:  #272727;
+    color: white;
+}
+.tBox1 p {
+    color: #d6d6d6;
+}
+.tBox2 p {
+    color: #444444;
+}
+.theBox1 {
+    background: #ffffff;
+}
+.theBox2 {
+    background: #1f1f1f;
+}
+.currentTxt {
+    padding-right: 2rem;
+    margin: 0 2rem 0 0;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include accentuate($accents) {
+        color: accented('mainColor');
+    }
+    @include themify($themes) {
+        border-right: 1px solid themed('contrast');
+    }
+}
+.accSwitches {
+    display: flex;
+}
+
+.accSwitch {
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    margin: 0 1.5rem 1.5rem 0;
+    border: none;
+}
+#acCirs {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
 }
 
 /* Upload Page Styling _______________________________________________________ */
@@ -979,13 +1168,13 @@ nav {
     bottom: 0;
     width: 50%;
     padding: 3px;
-    z-index: 5;
     -webkit-transition: transform 0.3s ease;
     transition: transform 0.3s ease;
 }
 .toggle {
     border-radius: 35px;
     height: 100%;
+    z-index: 50;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     @include accentuate($accents) {
@@ -1198,6 +1387,11 @@ nav {
 .logLabel {
     margin: 0 0 5px 40px;
 }
+.logErr {
+    text-align: left;
+    color: $rouge;
+    margin-left: 20px;
+}
 #USN, #PWD, #PWD2 {
     width: 300px;
     font-size: large;
@@ -1280,13 +1474,27 @@ nav {
 .logIn.active {
     pointer-events: all;
     opacity: 1;
+    @include themify($themes) {
+        background: themed('faintTxt');
+    }
 }
 .signUp.active {
-    pointer-events: all;
     opacity: 1;
     bottom: 12.1%;
     -webkit-transition: opacity 0.3s ease 0.3s;
     transition: opacity 0.3s ease 0.3s;
+    @include themify($themes) {
+        background: themed('faintTxt');
+    }
+}
+.signUp.active2, .logIn.active2 {
+    pointer-events: all;
+    @include themify($themes) {
+        background: themed('txt');
+    }
+}
+#LGF a {
+    pointer-events: none;
 }
 #forgot {
     opacity: 0;
@@ -1333,6 +1541,190 @@ nav {
     margin-top: 4rem;
 }
 
+/* Create Profile page Styling _____________________________________________________*/
+.createBox {
+    text-align: center;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: calc(50% - 350px);
+    left: calc(50% - 500px);
+    width: 1000px;
+    height: 775px;
+    border-radius: 20px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#CYP {
+    position: absolute;
+    left: calc(50% - 176.0px);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+#picName {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+#UserN {
+    margin: 50px 50px 0 0;
+    width: 300px;
+    font-size: 2.5rem;
+    -webkit-transition: all 0.3s ease;
+    border: none;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+        border-bottom: 2px solid themed('contrast');
+    }
+}
+#UserN:focus {
+    outline: none;
+}
+.profDetails2 {
+    width: 550px;
+    margin: auto;
+}
+.DP2 {
+    width: 100px;
+    margin-left: 50px;
+    border-radius: 50px;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+    }
+}
+#changeDP2 {
+    left: calc(32.5% - 50px);
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    opacity: 0;
+    top: 4.4%;
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    border: 1px solid rgba($color: #000000, $alpha: 0.5);
+    border-radius: 50px;
+    color: #ffffff;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+#changeDP2:hover {
+    opacity: 1;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.profLabel2 {
+    width: fit-content;
+    margin: 0 0 5px 50px;
+}
+.profLabel3 {
+    width: fit-content;
+    margin: 0 0 5px 115px;
+}
+#FN2, #LN2, #Web2 {
+    font-size: medium;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#names2 {
+    display: flex;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+#FN2, #LN2 {
+    width: 200px;
+    padding: 5px;
+}
+#FN2 {
+    margin-right: 2rem;
+}
+#Web2 {
+    width: calc(400px + 2rem);
+    padding: 5px 10px;
+}
+#Bio2 {
+    width: calc(400px + 2rem);
+    height: 80px;
+    padding: 10px;
+    font-size: medium;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+        color: themed('txt');
+        border: 1px solid themed('contrast');
+    }
+}
+#profSocials2 {
+    height: 8rem;
+    width: 550px;
+    margin: 2rem auto 0;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    padding-bottom: 0.5rem;
+    @include themify($themes) {
+        border-top: 1px solid themed('faintTxt');
+        border-bottom: 1px solid themed('faintTxt');
+    }
+}
+#socIcons2 {
+    width: 300px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-around;
+}
+.socIcon2 {
+    font-size: 2.5rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    @include themify($themes) {
+        color: themed('faintTxt');
+    }
+}
+.socIcon20 {
+    font-size: 2.5rem;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.ico0.active, .ico1.active, .ico2.active {
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.ico0.active:hover, .ico1.active:hover, .ico2.active:hover {
+    @include themify($themes) {
+        color: themed('txt');
+    }
+}
+.socIcon2:hover {
+    @include themify($themes) {
+        color: themed('contrast');
+    }
+}
+.pfB {
+    margin-top: 2rem;
+}
+
 /* Theme Button Styling _____________________________________________________*/
 .themeSwitch {
     position: absolute;
@@ -1375,8 +1767,12 @@ nav {
     margin: 25px;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
+    @include themify($themes) {
+        background: themed('outerBkg');
+    }
 }
 .aOpt {
+    border: none;
     z-index: 50;
     position: absolute;
     width: 15px;
@@ -1388,9 +1784,6 @@ nav {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     cursor: pointer;
-    @include themify($themes) {
-        border: 1px solid themed('contrast');
-    }
 }
 .palette:hover .aOpt {
     height: 30px;
@@ -1404,6 +1797,18 @@ nav {
         background: accented('mainColor');
     }
 }
+.gry {background-color: #5B738B}
+.rd {background-color: #EE3939}
+.mngo {background-color: #E76500}
+.ylo {background-color: #FFEE00}
+.grn {background-color: #36A41D}
+.tl {background-color: #049F9A}
+.blu {background-color: #1B90FF}
+.indgo {background-color: #7858FF}
+.pnk {background-color: #F31DED}
+.rsb {background-color: #Fa4F96}
+.blk {background-color: #000000}
+
 .palette:hover .current {
     visibility: visible;
     height: 50px;
@@ -1413,45 +1818,34 @@ nav {
 }
 .palette:hover .gry {
     bottom: 55px;
-    background-color: #5B738B;
 }
 .palette:hover .rd {
     bottom: 105px;
-    background-color: #EE3939;
 }
 .palette:hover .mngo {
     bottom: 155px;
-    background-color: #E76500;
 }
 .palette:hover .ylo {
     bottom: 205px;
-    background-color: #FFEE00;
 }
 .palette:hover .grn {
     bottom: 255px;
-    background-color: #36A41D;
 }
 .palette:hover .tl {
     bottom: 305px;
-    background-color: #049F9A;
 }
 .palette:hover .blu {
     bottom: 355px;
-    background-color: #1B90FF;
 }
 .palette:hover .indgo {
     bottom: 405px;
-    background-color: #7858FF;
 }
 .palette:hover .pnk {
     bottom: 455px;
-    background-color: #F31DED;
 }
 .palette:hover .rsb {
     bottom: 505px;
-    background-color: #Fa4F96;
 }
 .palette:hover .blk {
     bottom: 555px;
-    background-color: #000000;
 }

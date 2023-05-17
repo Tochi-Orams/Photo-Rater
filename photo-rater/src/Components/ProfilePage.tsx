@@ -3,27 +3,30 @@ import ProfileContext from '../Context/ProfileContext';
 import Settings from './Settings';
 
 const ProfilePage: FC = () => {
-    const {pSection, setPSection} = useContext(ProfileContext)
+    const { pSection, setPSection } = useContext(ProfileContext)
+
+    const tabs = {
+        ovv: document.getElementById("OV"),
+        act: document.getElementById("AC"),
+        set: document.getElementById("ST")
+    }
 
     const activeSection = () => {
-        const tabs = {
-            ovv: document.getElementById("OV"),
-            act: document.getElementById("AC"),
-            set: document.getElementById("ST")
-        }
         tabs.ovv?.classList.remove("active")
         tabs.act?.classList.remove("active")
         tabs.set?.classList.remove("active")
         if (pSection === "overview") {
+            console.log("overview")
             tabs.ovv?.classList.add("active")
         } else if (pSection === "activity") {
             tabs.act?.classList.add("active")
-        } else if (pSection === "settings") {
+        } else {
             tabs.set?.classList.add("active")
         }
     }
 
     useEffect(() => {
+        console.log(pSection)
         activeSection()
     }, [pSection])
 

@@ -6,13 +6,17 @@ import { FormControl, FormLabel, Input, FormErrorMessage, } from "@chakra-ui/rea
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import LoginContext from "../Context/LoginContext";
+import CreateAccountContext from "../Context/CreateAccountContext";
 
 const LoginPage: FC = () => {
     // eslint-disable-next-line
     const { status, setStatus } = useContext(LoginContext)
+    // eslint-disable-next-line
+    const { details, setDetails } = useContext(CreateAccountContext)
 
     const [page, setPage] = useState("login")
     const [match, setMatch] = useState(false)
+    const [tch, setTch] = useState(false)
 
     const pwdRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const pwd2Ref = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -26,7 +30,7 @@ const LoginPage: FC = () => {
         onSubmit: (values) => {
         },
         validationSchema: Yup.object({
-            USN: Yup.string().required("Required"),
+            USN: Yup.string().email("Invalid email").required("Required"),
             PWD: Yup.string().required(),
             PWD2: Yup.string().required(),
         })
@@ -88,12 +92,14 @@ const LoginPage: FC = () => {
             tog1 ? elems.view1.type = "text"
             : elems.view1.type = "password"
         }
+        // eslint-disable-next-line
     }, [tog1])
     useEffect(() => {
         if (elems.view2) {
         tog2 ? elems.view2.type = "text"
         : elems.view2.type = "password"
         }
+        // eslint-disable-next-line
     }, [tog2])
 
     // Show password guidelines
@@ -119,7 +125,33 @@ const LoginPage: FC = () => {
         } else {
             setMatch(false)
         }
+        // eslint-disable-next-line
     }, [Formik.values])
+
+    // Button activation
+    const crButton = document.querySelector(".signUp") as HTMLElement
+    const lgButton = document.querySelector(".logIn") as HTMLElement
+    useEffect(() => {
+        if (page === "login") {
+            if (!Formik.errors.USN && !Formik.errors.PWD && pwdRef.current.value) {
+                lgButton?.classList.add("active2")
+            } else {
+                lgButton?.classList.remove("active2")
+            }
+        } else {
+            if (match && !Formik.errors.USN) {
+                crButton?.classList.add("active2")
+            } else {
+                crButton?.classList.remove("active2")
+            }
+        }
+    })
+
+    // Continue to Account Creation
+    const proceed = () => {
+        setStatus(["out", "username"])
+        setDetails({email: Formik.values.USN, password: pwdRef.current.value})
+    }
 
     return (
         <>
@@ -131,16 +163,18 @@ const LoginPage: FC = () => {
             <article className="loginBox">
                 <img src={require("../assets/logo.png")} alt="Logo" />
                 <h1>App Name</h1>
-                <form>
+                <form id="LGF">
                     <FormControl>
-                        <FormLabel htmlFor="USN" className="logLabel">Email</FormLabel>
+                        {Formik.errors.USN && tch ?
+                        <FormLabel htmlFor="USN" className="logLabel">Email:<span className="logErr">{Formik.errors.USN}</span></FormLabel>
+                        : <FormLabel htmlFor="USN" className="logLabel">Email</FormLabel>}
                         <Input
                           id="USN"
                           type="email"
                           value={Formik.values.USN}
                           onChange={Formik.handleChange}
+                          onBlur={() => setTch(true)}
                         />
-                        <FormErrorMessage>{Formik.errors.USN}</FormErrorMessage>
                     </FormControl>
                     <FormControl>
                         <FormLabel htmlFor="PWD" className="logLabel">Password</FormLabel>
@@ -154,7 +188,6 @@ const LoginPage: FC = () => {
                         <div id="view" className="eye" onClick={() => setTog1(!tog1)}>
                             <FontAwesomeIcon icon={faEye} />
                         </div>
-                        <FormErrorMessage>{Formik.errors.PWD}</FormErrorMessage>
                     </FormControl>
                     <FormControl className="confPass">
                         <FormLabel htmlFor="PWD2" className="logLabel">Confirm Password</FormLabel>
@@ -168,14 +201,13 @@ const LoginPage: FC = () => {
                         <div id="view1" className="eye1" onClick={() => setTog2(!tog2)}>
                             <FontAwesomeIcon icon={faEye} />
                         </div>
-                        <FormErrorMessage>{Formik.errors.PWD2}</FormErrorMessage>
                     </FormControl>
-                    <Link to="/" onClick={() => setStatus(["in", "username"])}>
+                    <Link to="home" onClick={() => setStatus(["in", "username"])}>
                         <button className="Button logIn">
                             Sign In
                         </button>
                     </Link>
-                    <Link to="create-Profile" onClick={() => setStatus(["out", "username"])}>
+                    <Link to="create-profile" onClick={() => proceed()}>
                         <button className="Button signUp">
                             Continue
                         </button>
@@ -191,8 +223,8 @@ const LoginPage: FC = () => {
                     </span>
                     :
                     <span className="pValid pLen">
-                        <FontAwesomeIcon icon={faX} color="red"/>
-                        <p style={{color: "red"}}>6+ characters long</p>
+                        <FontAwesomeIcon icon={faX} color="#850000"/>
+                        <p style={{color: "#850000"}}>6+ characters long</p>
                     </span>}
 
                     {/\d/.test(pwdRef.current?.value) ?
@@ -202,8 +234,8 @@ const LoginPage: FC = () => {
                     </span>
                     :
                     <span className="pValid pNum">
-                        <FontAwesomeIcon icon={faX} color="red"/>
-                        <p style={{color: "red"}}>Contains a number</p>
+                        <FontAwesomeIcon icon={faX} color="#850000"/>
+                        <p style={{color: "#850000"}}>Contains a number</p>
                     </span>}
 
                     {/[A-Z]/.test(pwdRef.current?.value) ?
@@ -213,19 +245,19 @@ const LoginPage: FC = () => {
                     </span>
                     :
                     <span className="pValid pCap">
-                        <FontAwesomeIcon icon={faX} color="red"/>
-                        <p style={{color: "red"}}>Contains a capital letter</p>
+                        <FontAwesomeIcon icon={faX} color="#850000"/>
+                        <p style={{color: "#850000"}}>Contains a capital letter</p>
                     </span>}
 
-                    {pwdRef.current?.value === pwd2Ref.current?.value ?
+                    {pwdRef.current?.value === pwd2Ref.current?.value && pwd2Ref.current?.value.length !== 0 ?
                     <span className="pValid pMatch">
                         <FontAwesomeIcon icon={faCheck} color="green"/>
                         <p style={{color: "green"}}>Passwords match</p>
                     </span>
                     :
                     <span className="pValid pMatch">
-                        <FontAwesomeIcon icon={faX} color="red"/>
-                        <p style={{color: "red"}}>Passwords match</p>
+                        <FontAwesomeIcon icon={faX} color="#850000"/>
+                        <p style={{color: "#850000"}}>Passwords match</p>
                     </span>}
                 </div>
             </article>

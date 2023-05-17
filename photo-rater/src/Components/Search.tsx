@@ -156,17 +156,17 @@ const Search: FC = () => {
             </div>
             <form className="navForm">
                 <div className="srchContainer">
-                    <input
-                        type="text"
-                        id="search"
-                        placeholder="Search"
-                        value={formik.values.search}
-                        onClick={() => handleFocus()}
-                        onChange={formik.handleChange}
-                    />
-                    <label htmlFor="search" className="srchLabel">
-                        <FontAwesomeIcon id="mag" icon={faMagnifyingGlass} size="1x"/>
-                    </label>
+                        <input
+                            type="text"
+                            id="search"
+                            placeholder="Search"
+                            value={formik.values.search}
+                            onClick={() => handleFocus()}
+                            onChange={formik.handleChange}
+                        />
+                        <label htmlFor="search" className="srchLabel">
+                            <FontAwesomeIcon id="mag" icon={faMagnifyingGlass} size="1x"/>
+                        </label>
                 </div>
             </form>
             <section className="searchTxt">

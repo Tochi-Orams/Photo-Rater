@@ -1,34 +1,31 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 
 const Home: FC = () => {
     const [picGal, setPicGal] = useState("trending")
     const [page, setPage] = useState(1)
 
-    const toggleGal = (state: string) => {
-        const trnd = document.getElementById("trend") as HTMLInputElement
-        const rcnt = document.getElementById("recent") as HTMLInputElement
-        const trndng = state === "trending"
+    const trnd = document.getElementById("trend") as HTMLInputElement
+    const rcnt = document.getElementById("recent") as HTMLInputElement
+    useEffect(() => {
         if (trnd && rcnt) {
-            if (!trndng) {
-                setPicGal("trending")
+            if (picGal === "trending") {
                 trnd.checked = true
                 rcnt.checked = false
             } else {
-                setPicGal("recent")
-                trnd.checked = true
-                rcnt.checked = false
+                rcnt.checked = true
+                trnd.checked = false
             }
         }
-    }
+    }, [picGal])
 
     return (
         <>
              <section className="pageContents order">
-                <input type="radio" id="trend" name="newestSwitch" value="trend" />
+                <input type="radio" id="trend" name="newestSwitch" value="trend" checked />
                 <input type="radio" id="recent" name="shuffleSwitch" value="recent" />
-                <label htmlFor="trend" onClick={() => toggleGal("trending")}><h2>Trending</h2></label>
-                <label htmlFor="recent" onClick={() => toggleGal("recent")}><h2>Newest</h2></label >
+                <label htmlFor="trend" onClick={() => setPicGal("trending")}><h2>Trending</h2></label>
+                <label htmlFor="recent" onClick={() => setPicGal("recent")}><h2>Newest</h2></label >
                 <div className="switch">
                     <div className="toggle">
                         <h2>Trending</h2>
@@ -36,7 +33,7 @@ const Home: FC = () => {
                     </div>
                 </div>
             </section>
-            <article className=" pageContents galleryBox">
+            <article className="pageContents galleryBox">
                 <div className="pages">
 
                 </div>

@@ -14,7 +14,7 @@ const Nav: FC = () => {
         <ProfileContext.Provider value={{pSection, setPSection}}>
             <nav>
                 <div className="home navSection">
-                    <Link to="/" className="navItem navIcon">
+                    <Link to="home" className="navItem navIcon">
                         <FontAwesomeIcon id="home" icon={faHome} size="1x" />
                     </Link>
                 </div>
@@ -45,7 +45,7 @@ const Nav: FC = () => {
                                     Settings
                                 </button>
                             </Link>
-                            <Link to="login">
+                            <Link to="/">
                                 <button className="logOut pD" onClick={() => setStatus(["out", ""])}>
                                     Sign Out
                                 </button>
