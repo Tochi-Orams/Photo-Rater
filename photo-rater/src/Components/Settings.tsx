@@ -1,6 +1,6 @@
-import { FC, useState, useEffect, useContext } from "react";
+import { FC, useState, useEffect, useContext, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera, faCirclePlus, faX, faCircleCheck, faCircleXmark, faPen, faTrash, faCircleQuestion} from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faCirclePlus, faX, faCircleCheck, faCircleXmark, faPen, faTrash, faCircleQuestion, faEye, faCircleInfo, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faFacebook, faTiktok, faLinkedin, faTwitter, faPinterest } from "@fortawesome/free-brands-svg-icons";
 import { FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { IconName, library } from "@fortawesome/fontawesome-svg-core";
 import ThemeContext from "../Context/ThemeContext";
 import AccentContext from "../Context/AccentContext";
+import LoginContext from "../Context/LoginContext";
 
 var isEqual = require('lodash.isequal');
 
@@ -256,7 +257,7 @@ const Profile: FC<ProfileProps> = ({setPChange}) => {
                         }
                     </div>
                     <FormControl>
-                        <FormLabel htmlFor="site" className="profLabel2">Platform</FormLabel>
+                        <FormLabel htmlFor="site" className="profLabel3">Platform</FormLabel>
                         <select
                           id="site"
                           value={socOp}
@@ -272,7 +273,7 @@ const Profile: FC<ProfileProps> = ({setPChange}) => {
                         </select>
                     </FormControl>
                     <FormControl>
-                        <FormLabel htmlFor="url" className="profLabel2">Profile URL</FormLabel>
+                        <FormLabel htmlFor="url" className="profLabel3">Profile URL</FormLabel>
                         <Input
                           id="url"
                           value={socFormik.values.url}
@@ -372,9 +373,182 @@ const Profile: FC<ProfileProps> = ({setPChange}) => {
     )
 }
 
-const Account: FC = () => {
+interface AccountProps {
+    inf: boolean
+    setInf(value: boolean): void
+}
+
+const Account: FC<AccountProps> = ({inf, setInf}) => {
+    const { status, setStatus } = useContext(LoginContext)
+
+    const [cPwd, setCPwd] = useState(false)
+    const [tog1, setTog1] = useState(false)
+    const [tog2, setTog2] = useState(false)
+    const [tch, setTch] = useState({
+        usn: false,
+        pwd: false,
+        pwd2: false
+    })
+    const [focii, setfocii] = useState({
+        usn: false,
+        pwd: false,
+        pwd2: false
+    })
+    const [valids, setValids] = useState({
+        usn: false,
+        pwd: false,
+        pwd2: false
+    })
+
+    const pwdRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+    const pwd2Ref = useRef() as React.MutableRefObject<HTMLInputElement>;
+
+    const pwdFormik = useFormik({
+        initialValues: {
+            USN: status[1],
+            OGP: "",
+            NP: "",
+            CNP: "",
+        },
+        onSubmit: (values) => {
+        },
+        validationSchema: Yup.object({
+            OGP: Yup.string().required("Required"),
+            NP: Yup.string().required("Required"),
+            CNP: Yup.string().required("Required"),
+        })
+    })
+
+    const cpForm = document.getElementById("cPwd") as HTMLElement
+    useEffect(() => {
+        if (cPwd) {
+            cpForm?.classList.add("active")
+        } else {
+            cpForm?.classList.remove("active")
+        }
+    }, [cPwd])
+
+    const pop = document.getElementById("pwdPop") as HTMLElement
+    useEffect(() => {
+        if (inf) {
+            pop?.classList.add("active")
+        } else {
+            pop?.classList.remove("active")
+        }
+    })
+
+    // field validity
+    const names = ["username", "karl", "test"] // update with backend (holds existing usernames)
+
+    // const usV = document.getElementById("usV") as HTMLElement
+    // const pwV = document.getElementById("pwV") as HTMLElement
+    // const pw2V = document.getElementById("pw2V") as HTMLElement
+    useEffect(() => {
+        if (pwdFormik.values.USN === status[1]) {
+            setValids({...valids, usn: true})
+        } else if (pwdFormik.values.USN.length > 3 && !names.includes(pwdFormik.values.USN)) {
+            setValids({...valids, usn: true})
+        } else {
+            setValids({...valids, usn: false})
+        }
+    }, [pwdFormik.values.USN])
+
+    useEffect(() => {
+        if (pwdFormik.values.NP.length > 5) {
+            setValids({...valids, pwd: true})
+        }
+    }, [pwdFormik.values.NP])
+
     return (
         <>
+            <div id="cUSN">
+                <h2>Username</h2>
+                <form id="cUsn">
+                    <FormControl>
+                        {pwdFormik.errors.USN && tch.usn ?
+                        <FormLabel htmlFor="USN" className="profLabel">New Username:<span className="logErr">{pwdFormik.errors.OGP}</span></FormLabel>
+                        : <FormLabel htmlFor="USN" className="profLabel">New Username</FormLabel>}
+                        <Input
+                          id="USN"
+                          type="email"
+                          value={pwdFormik.values.USN}
+                          onChange={pwdFormik.handleChange}
+                          onFocus={() => setfocii({...focii, usn: true})}
+                          onBlur={() => {setTch({...tch, usn: true})
+                            setfocii({...focii, usn: false})}}
+                        />
+                        {(focii.usn || tch.usn) && valids.usn ? <FontAwesomeIcon className="acV" icon={faCheck} color="green"/>
+                        : focii.usn ? <FontAwesomeIcon className="acV" icon={faX} color="#850000"/>
+                        : <span></span>}
+                    </FormControl>
+                </form>
+            </div>
+            <div id="CPWD">
+                <h2>Password</h2>
+                <form id="cPwd">
+                    <FormControl>
+                        {pwdFormik.errors.OGP && tch.pwd ?
+                        <FormLabel htmlFor="PWD" className="profLabel">Current Password:<span className="logErr">{pwdFormik.errors.OGP}</span></FormLabel>
+                        : <FormLabel htmlFor="PWD" className="profLabel">Current Password</FormLabel>}
+                        <Input
+                          id="PWD"
+                          type="email"
+                          value={pwdFormik.values.OGP}
+                          onChange={pwdFormik.handleChange}
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel htmlFor="PWD2" className="profLabel">New Password</FormLabel>
+                        <Input
+                          id="PWD2"
+                          ref={pwdRef}
+                          type="password"
+                          value={pwdFormik.values.NP}
+                          onChange={pwdFormik.handleChange}
+                          onFocus={() => setfocii({...focii, pwd: true})}
+                          onBlur={() => {setTch({...tch, pwd: true})
+                            setfocii({...focii, pwd: false})}}
+                        />
+                        {(focii.pwd || tch.pwd) && valids.pwd ? <FontAwesomeIcon className="acV" icon={faCheck} color="green"/>
+                        : focii.pwd && pwdRef.current.value.length < 1 ? <FontAwesomeIcon className="acV" icon={faX} color="#850000"/>
+                        : <span></span>}
+                        <div id="view" className="eye2" onClick={() => setTog1(!tog1)}>
+                            <FontAwesomeIcon icon={faEye} />
+                        </div>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel htmlFor="PWD3" className="profLabel">Confirm New Password</FormLabel>
+                        <Input
+                          id="PWD3"
+                          ref={pwd2Ref}
+                          type="password"
+                          value={pwdFormik.values.CNP}
+                          onChange={pwdFormik.handleChange}
+                          onFocus={() => setfocii({...focii, pwd2: true})}
+                          onBlur={() => {setTch({...tch, pwd2: true})
+                            setfocii({...focii, pwd2: false})}}
+                        />
+                        {(focii.pwd2 || tch.pwd) && valids.pwd2 ? <FontAwesomeIcon className="acV" icon={faCheck} color="green"/>
+                        : focii.pwd2 && pwd2Ref.current.value.length < 1 ? <FontAwesomeIcon className="acV" icon={faX} color="#850000"/>
+                        : <span></span>}
+                        <div id="view1" className="eye3" onClick={() => setTog2(!tog2)}>
+                            <FontAwesomeIcon icon={faEye} />
+                        </div>
+                    </FormControl>
+                    <FontAwesomeIcon id="pwdInfo" icon={faCircleInfo} onClick={() => setInf(true)}/>
+                    <div id="pwdPop">
+                        <h3>Password Requirements</h3>
+                        <ul>
+                            <li>At least 6 characters long</li>
+                            <li>Contains at least one number</li>
+                            <li>Contains at least one capital letter</li>
+                        </ul>
+                    </div>
+                </form>
+                <button className="Button pwdButton" onClick={() => setCPwd(!cPwd)}>
+                    {!cPwd ? <span>Change Password</span> : <span>Cancel</span>}
+                </button>
+            </div>
         </>
     )
 }
@@ -395,7 +569,7 @@ const Appearance: FC = () => {
                 dkt.checked = true
             }
         }
-    })
+    }, [theme])
 
     return (
         <>
@@ -414,8 +588,8 @@ const Appearance: FC = () => {
                                 </div>
                             </div>
                         </label>
-                        <input type="radio" id="ltTheme" value="light" onClick={(e) => {e.preventDefault() 
-                            setTheme("light")}}/>
+                        {theme === "light" ? <input type="radio" checked id="ltTheme" value="light" onClick={(e) => setTheme("light")}/>
+                        : <input type="radio" id="ltTheme" value="light" onClick={(e) => setTheme("light")}/>}
                     </div>
                     <div id="TH2">
                         <label htmlFor="dkTheme">
@@ -429,16 +603,16 @@ const Appearance: FC = () => {
                                 </div>
                             </div>
                         </label>
-                        <input type="radio" id="dkTheme" value="dark" onClick={(e) => {e.preventDefault()
-                            setTheme("dark")}}/>
+                        {theme === "dark" ? <input type="radio" checked id="dkTheme" value="dark" onClick={(e) => setTheme("dark")}/>
+                        : <input type="radio" id="dkTheme" value="dark" onClick={(e) => setTheme("dark")}/>}
                     </div>
                 </div>
             </form>
             <div>
                 <h2>Accent</h2>
                 <div className="accSwitches">
-                    <div>
-                        <h2 className="currentTxt">CURRENT</h2>
+                    <div className="currentTC">
+                        <div className="currentTxt"></div>
                     </div>
                     <div id="acCirs">
                         <button type="button" className="gry accSwitch" onClick={() => setAccent("gry")}/>
@@ -459,10 +633,16 @@ const Appearance: FC = () => {
     )
 }
 
-const Settings: FC = () => {
+interface SettingsProps {
+    inf: boolean
+    setInf(value: boolean): void
+}
+
+const Settings: FC<SettingsProps> = ({inf, setInf}) => {
     const [setSec, setSetSec] = useState("profile")
     const [pChange, setPChange] = useState(false)
 
+    // Accept / cancel buttons
     const acceptChange = (sec: string) => {
     }
     const cancelChange = (sec: string) => {
@@ -470,7 +650,6 @@ const Settings: FC = () => {
 
     const acc = document.querySelector(".saveSet") as HTMLElement
     const rev = document.querySelector(".revertSet") as HTMLElement
-
     useEffect(() => {
         acc?.classList.remove("hidden")
         rev?.classList.remove("hidden")
@@ -488,18 +667,40 @@ const Settings: FC = () => {
         }
     })
 
+    // settings section
+    const sctns = {
+        pFl: document.getElementById("pFl") as HTMLElement,
+        aCnt: document.getElementById("aCnt") as HTMLElement,
+        aPrnc: document.getElementById("aPrnc") as HTMLElement,
+    }
+    const activeSec = () => {
+        sctns.pFl?.classList.remove("active")
+        sctns.aCnt?.classList.remove("active")
+        sctns.aPrnc?.classList.remove("active")
+        if (setSec === "profile") {
+            sctns.pFl?.classList.add("active")
+        } else if (setSec === "account") {
+            sctns.aCnt?.classList.add("active")
+        } else {
+            sctns.aPrnc?.classList.add("active")
+        }
+    }
+    useEffect(() => {
+        activeSec()
+    }, [setSec])
+
     return (
         <article id="stngs">
             <ul id="settingsList">
-                <li onClick={() => setSetSec("profile")}>Profile</li>
-                <li onClick={() => setSetSec("account")}>Account</li>
-                <li onClick={() => setSetSec("appearance")}>Appearance</li>
+                <li id="pFl" onClick={() => setSetSec("profile")}>Profile</li>
+                <li id="aCnt" onClick={() => setSetSec("account")}>Account</li>
+                <li id="aPrnc" onClick={() => setSetSec("appearance")}>Appearance</li>
             </ul>
             <div className="accSet">
                 {setSec === "profile" ?
                 <Profile setPChange={setPChange} />
                 : setSec === "account" ?
-                <Account />
+                <Account inf={inf} setInf={setInf}/>
                 :
                 <Appearance />}
             </div>

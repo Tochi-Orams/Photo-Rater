@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState, useContext } from "react";
+import { FC, FormEvent, useState, useContext, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faChecked } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faUnchecked } from "@fortawesome/free-regular-svg-icons";
@@ -11,8 +11,14 @@ import * as Yup from "yup";
 interface state {h: boolean, s: boolean}
 interface data {stars: number, comment: string}
 interface current {hov: number, slct: number}
+interface formProps {
+    currentPic: number,
+    setCurrentPic(currentPic: number): any,
+    photos: string[],
+    setPhotos(photos: string[]): any,
+}
 
-const RatingForm: FC = (): JSX.Element => {
+const RatingForm: FC<formProps> = ({currentPic, setCurrentPic, photos, setPhotos}): JSX.Element => {
     const [s0, setS0] = useState<state>({h: false, s: false})
     const [s1, setS1] = useState<state>({h: false, s: false})
     const [s2, setS2] = useState<state>({h: false, s: false})
@@ -24,6 +30,7 @@ const RatingForm: FC = (): JSX.Element => {
 
     const { order, setOrder} = useContext(OrderContext)
 
+    // Star rating
     const activates = [() => setS0({...s0, h: true}), () => setS1({...s1, h: true}), () => setS2({...s2, h: true}),
         () => setS3({...s3, h: true}), () => setS4({...s4, h: true})]
 
@@ -107,24 +114,66 @@ const RatingForm: FC = (): JSX.Element => {
         })
     })
 
-    const submit = () => {
-        if (currentRating.slct > 0) {
-            setRatingData({...ratingData, stars: currentRating.slct, comment: formik.values.comment})
+    // Getting the current picture
+    const [modal, setModal] = useState(false)
+    const [rated, setRated] = useState<number[]>([])
+
+    useEffect(() => {
+        if (order === "newest") {
+            setCurrentPic(0)
+        } else {
+            setCurrentPic(Math.floor(Math.random() * photos.length))
         }
+    }, [order])
+
+    const nextPic = (x: number) => {
+        if (x === 1) {
+            // submitting the rating data to backend
+            if (currentRating.slct > 0) {
+                setRatingData({...ratingData, stars: currentRating.slct, comment: formik.values.comment})
+            }
+            console.log(ratingData)
+
+            // add rated picture index to "rated" list
+            setRated([...rated, currentPic])
+
+            // Trigger modal
+            setModal(true)
+        }
+        // Reset form values
+        formik.values.comment = ""
+        for (let x: number = 0; x < 5; x++) {
+            deactivates[x]()
+            deselects[x]()
+        }
+        setCurrentRating({hov: 0, slct: 0})
+
+        // Move to the next picture
+        if (order === "shuffle") {
+            setCurrentPic(Math.floor(Math.random() * photos.length))
+        } else {
+            setCurrentPic(currentPic + 1)
+        }
+        console.log(currentPic)
+        console.log(photos)
+
     }
 
-    const skip = () => {
-        if (order === "newest") {
-            // Skip
+    // Modal
+    useEffect(() => {
+        if (modal) {
+            (document.getElementById("rateModal") as HTMLElement)?.classList.add("active")
+            setTimeout(() => {
+                setModal(false)
+            }, 5000);
         } else {
-            //  skip
+            (document.getElementById("rateModal") as HTMLElement)?.classList.remove("active")
         }
-    }
+    }, [modal])
 
     return (
         <section className="rating">
-            <form className="rateForm" onSubmit={(e: FormEvent) => {e.preventDefault()
-                submit()}}>
+            <form className="rateForm" onSubmit={(e: FormEvent) => e.preventDefault()}>
                 <h2 id="rateHead">Rating</h2>
                 <div className="score">
                     <div onMouseLeave={() => unhover()}>
@@ -154,24 +203,24 @@ const RatingForm: FC = (): JSX.Element => {
                         </div>
                         <div>
                             <TransitionGroup>
-                                {currentRating.slct === 1 ?
                                 <CSSTransition
                                   classNames="emojiAnim"
                                   timeout={300}
                                 >
+                                    {currentRating.slct === 1 ?
                                     <p className="emoji">🤮</p>
+                                    : currentRating.slct === 2 ?
+                                    <p className="emoji">👎</p>
+                                    : currentRating.slct === 3 ?
+                                    <p className="emoji">😐</p>
+                                    : currentRating.slct === 4 ?
+                                    <p className="emoji">👀</p>
+                                    : currentRating.slct === 5 ?
+                                    <p className="emoji">😍</p>
+                                    :
+                                    <p className="no-emoji"> </p>
+                                    }
                                 </CSSTransition>
-                                : currentRating.slct === 2 ?
-                                <p className="emoji">👎</p>
-                                : currentRating.slct === 3 ?
-                                <p className="emoji">😐</p>
-                                : currentRating.slct === 4 ?
-                                <p className="emoji">👀</p>
-                                : currentRating.slct === 5 ?
-                                <p className="emoji">😍</p>
-                                :
-                                <p className="no-emoji"></p>
-                                }
                             </TransitionGroup>
                         </div>
                     </div>
@@ -189,14 +238,17 @@ const RatingForm: FC = (): JSX.Element => {
                     <p className="chars">{180-formik.values.comment.length} characters remaining</p>
                 </FormControl>
                 <div id="formButtons">
-                    <button aria-label="Submit" type="submit" className="Button lgButton sButton">
+                    <button aria-label="Submit" type="submit" className="Button lgButton sButton" onClick={() => nextPic(1)}>
                         Submit Rating
                     </button>
-                    <button className="Button skip" onClick={skip}>
+                    <button className="Button skip" onClick={() => nextPic(0)}>
                         Skip
                     </button>
                 </div>
             </form>
+            <div id="rateModal">
+                <p>Your rating has been submitted</p>
+            </div>
         </section>
     )
 }

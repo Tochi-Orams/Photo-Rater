@@ -5,31 +5,28 @@ const Home: FC = () => {
     const [picGal, setPicGal] = useState("trending")
     const [page, setPage] = useState(1)
 
-    const trnd = document.getElementById("trend") as HTMLInputElement
-    const rcnt = document.getElementById("recent") as HTMLInputElement
     useEffect(() => {
-        if (trnd && rcnt) {
-            if (picGal === "trending") {
-                trnd.checked = true
-                rcnt.checked = false
-            } else {
-                rcnt.checked = true
-                trnd.checked = false
-            }
+        const swtch = document.querySelectorAll(".switchLabel") as NodeList
+        const trnd = (swtch[0] as HTMLElement)
+        const rcnt = (swtch[1] as HTMLElement)
+        if (picGal === "recent") {
+            trnd.classList.add("active")
+            rcnt.classList.remove("active")
+        } else {
+            trnd.classList.remove("active")
+            rcnt.classList.add("active")
         }
     }, [picGal])
 
     return (
         <>
-             <section className="pageContents order">
-                <input type="radio" id="trend" name="newestSwitch" value="trend" checked />
-                <input type="radio" id="recent" name="shuffleSwitch" value="recent" />
-                <label htmlFor="trend" onClick={() => setPicGal("trending")}><h2>Trending</h2></label>
-                <label htmlFor="recent" onClick={() => setPicGal("recent")}><h2>Newest</h2></label >
+            <section className="pageContents order">
+                <h2 className="switchLabel" onClick={() => setPicGal("recent")}>Newest</h2>
+                <h2 className="switchLabel" onClick={() => setPicGal("trending")}>Trending</h2>
                 <div className="switch">
                     <div className="toggle">
-                        <h2>Trending</h2>
                         <h2>Newest</h2>
+                        <h2>Trending</h2>
                     </div>
                 </div>
             </section>

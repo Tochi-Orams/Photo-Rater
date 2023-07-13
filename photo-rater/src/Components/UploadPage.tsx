@@ -1,6 +1,6 @@
-import { FC, FormEvent, useState, useEffect, useRef, RefObject } from 'react';
+import { FC, FormEvent, useState, useRef, RefObject } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faCircleArrowUp, faX } from "@fortawesome/free-solid-svg-icons";
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
@@ -8,62 +8,48 @@ import { keyboardKey } from '@testing-library/user-event';
 
 const UploadPage: FC = () => {
     const [foc, setFoc] = useState(false)
-    const [space, setSpace] = useState(0)
-    const [tags, setTags] = useState<any[]>([])
+    const [tags, setTags] = useState<string[]>([])
     const [len, setLen] = useState(0)
 
+    const [txt, setTxt] = useState<string>("")
+
     const HTRef = useRef() as RefObject<HTMLDivElement>
+    const tagtext = document.querySelector(".HTInput") as HTMLElement
 
-    let txtContent: any
-    const content = (e: FormEvent) => {
-        return txtContent = e.currentTarget?.textContent
+    const handleChange = (e: FormEvent) => {
+        if (e.currentTarget.textContent) {
+            setTxt(e.currentTarget.textContent)
+        }
     }
 
+    // Create a tag
     const createHT = () => {
-        const tagDiv = document.getElementById("hashtags") as HTMLDivElement
-        if(txtContent?.replace(/\s/g, '').length > 0){
-            const upTag: any[] = [...tags, {tag: `#${txtContent}`, func: (e: FormEvent) => {e.preventDefault()
-                removeTag(len)}}]
-            setTags(upTag)
-            setLen(len + 1)
+        if(txt?.replace(/\s/g, "").length > 0 && HTRef.current){
+            setTags([...tags, `#${txt}`])
+            setTxt("")
+            HTRef.current.textContent = ""
+            setTimeout(() => {
+                if (HTRef.current) {
+                    HTRef.current.textContent = ""
+                }
+            }, 5);
         }
     }
 
-    useEffect(() => {
-        const handleSpace = (event: keyboardKey) => {
-            if (event.code === "Space" || event.code === "Enter") {
-                setSpace(space + 1)
-                createHT()
-            }
+    // confirm a tag by pressing 'enter' or 'space'
+    const handleKey = (event: keyboardKey) => {
+        if (event.code === "Space" || event.code === "Enter") {
+            createHT()
         }
-
-        if (foc) {
-            document.addEventListener("keydown", handleSpace)
-            return () => document.removeEventListener("keydown", handleSpace)
+        if (event.code === "Backspace" && HTRef.current?.textContent === "") {
+            removeTag(tags.length - 1)
         }
-    }, [space, foc])
+        console.log(txt)
+    }
 
-
-    useEffect(() => {
-        console.log(tags, len)
-        // const tagDiv = document.getElementById("hashtags") as HTMLDivElement
-        // const clearField = () => {
-        //     // tagDiv.innerText = ""
-        // }
-        // clearField()
-    }, [tags])
-
+    // remove a tag
     const removeTag = (num: number) => {
-        console.log(num, 'tags')
-        const temp: any[] = []
-        for (let i=0; i<len; i++) {
-            if (i !== num) {
-                temp.push(tags[i])
-                console.log(i)
-            }
-        }
-        console.log(temp, 'temp')
-        // setTags(temp)
+        setTags(tags.filter((tag) => tags.indexOf(tag) !== num))
     }
 
     // Formik Initialization
@@ -112,21 +98,25 @@ const UploadPage: FC = () => {
                 <FormControl>
                     <FormLabel htmlFor="hashtags"><h2>Hashtags</h2></FormLabel>
                     <div id="hashtags">
-                        <div id="tags">
+                        <div id="tags" onClick={() => {tagtext.focus()
+                        setFoc(true)}}>
                             {tags.map((data, i) => (
                                 <div key={i} className="tagButton" contentEditable={false}>
-                                    <p>{data.tag}</p>
-                                    <button className="deleteTag" onClick={data.func}>x</button>
+                                    <p>{data}</p>
+                                    <button className="deleteTag" onClick={() => removeTag(i)}>
+                                        <FontAwesomeIcon icon={faX}/>
+                                    </button>
                                 </div>
                             ))}
+                            <p
+                              contentEditable={true}
+                              className="HTInput"
+                              ref={HTRef}
+                              onInput={handleChange}
+                              onBlur={() => setFoc(false)}
+                              onKeyDown={handleKey}
+                            />
                         </div>
-                        <p contentEditable={true}
-                          ref={HTRef}
-                          className="HTInput"
-                          onInput={(e) => content(e)}
-                          onClick={() => setFoc(true)}
-                          onBlur={() => setFoc(false)}
-                        />
                     </div>
                 </FormControl>
                 <button aria-label="Submit" type="submit" className="Button lgButton uButton">

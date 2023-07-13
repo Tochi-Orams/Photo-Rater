@@ -1,25 +1,16 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, FormEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faX } from "@fortawesome/free-solid-svg-icons";
-import { useFormik } from "formik";
-import exp from "constants";
 import { keyboardKey } from "@testing-library/user-event";
+import Loader from "./Loader";
 
 const Search: FC = () => {
     const [category, setCategory] = useState("")
     const [rating, setRating] = useState("")
     const [recency, setRecency] = useState("")
+    const [srchTxt, setSrchTxt] = useState("")
+    const [loading, setLoading] = useState(false)
 
-    const formik = useFormik({
-        initialValues: {
-            search: "",
-        },
-        onSubmit: (values) => {
-            console.log("")
-        },
-    })
-
-    // const srch = document.getElementById("search") as HTMLInputElement
     const handleFocus = () => {
         const page = document.querySelectorAll(".pageContents")
         const blr = document.querySelector(".overlay") as HTMLElement
@@ -42,6 +33,7 @@ const Search: FC = () => {
         }
     }
 
+    // Exit search on escape
     useEffect(() => {
         const handleEsc = (event: keyboardKey) => {
             if (event.key === "Escape") {
@@ -52,6 +44,15 @@ const Search: FC = () => {
         document.addEventListener("keydown", handleEsc)
         return () => document.removeEventListener("keydown", handleEsc)
     })
+
+    // Dislay loader
+    useEffect(() => {
+        if (srchTxt.length > 0) {
+            setLoading(true)
+        } else {
+            setLoading(false)
+        }
+    }, [srchTxt, category, rating, recency])
 
     const cats = (idx: number) => {
         const catOps = [
@@ -132,7 +133,7 @@ const Search: FC = () => {
         <div>
             <div className="overlay" >
                 <div className="closeSearch" onClick={exitSearch}>
-                    <FontAwesomeIcon id="x" icon={faX} size="1x"/>
+                    <FontAwesomeIcon id="x" icon={faX} />
                 </div>
                 <section className="filterOptions">
                     <h2 id="filtHead">Search Filters</h2>
@@ -154,29 +155,33 @@ const Search: FC = () => {
                     <button className="filter bt" type="button" onClick={clear}>Clear All</button>
                 </section>
             </div>
-            <form className="navForm">
+            <div className="navForm">
                 <div className="srchContainer">
-                        <input
-                            type="text"
-                            id="search"
-                            placeholder="Search"
-                            value={formik.values.search}
-                            onClick={() => handleFocus()}
-                            onChange={formik.handleChange}
-                        />
-                        <label htmlFor="search" className="srchLabel">
-                            <FontAwesomeIcon id="mag" icon={faMagnifyingGlass} size="1x"/>
-                        </label>
+                    <input
+                        type="text"
+                        id="search"
+                        placeholder="Search"
+                        value={srchTxt}
+                        onClick={() => handleFocus()}
+                        onChange={(e: FormEvent<HTMLInputElement>) => setSrchTxt(e.currentTarget.value)}
+                    />
+                    <label htmlFor="search" className="srchLabel">
+                        <FontAwesomeIcon id="mag" icon={faMagnifyingGlass} size="1x"/>
+                    </label>
                 </div>
-            </form>
+            </div>
             <section className="searchTxt">
                 <h2>Search Results</h2>
                 <div id="term">
-                    <h1>{formik.values.search}</h1>
+                    <h1>{srchTxt}</h1>
                 </div>
+                {loading ? <div>
+                    <Loader />
+                </div>
+                :
                 <div>
 
-                </div>
+                </div>}
             </section>
         </div>
     )
