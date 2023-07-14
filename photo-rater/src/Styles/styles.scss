@@ -1682,7 +1682,7 @@ nav {
     display: flex;
     padding: 1rem;
     margin: 1rem calc(1rem - 8px) 1rem 1rem;
-    border-radius: 10px;
+    border-radius: 20px;
     @include themify($themes) {
         border: 1px solid themed('contrast');
         background: themed("innerBkg");

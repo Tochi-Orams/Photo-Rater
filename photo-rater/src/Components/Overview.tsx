@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from "react"
+import { FC, useState, useContext, useEffect } from "react"
 import { Link } from 'react-router-dom';
 import { faLink, faStar, faComment, faCommentSlash, faX} from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faFacebook, faTiktok, faLinkedin, faTwitter, faPinterest } from "@fortawesome/free-brands-svg-icons";
@@ -33,7 +33,7 @@ const temporaryS = [
 // const { pics } = PicData()
 // console.log(pics)
 
-const pics = [
+const pictures = [
     {
         pic: require("../assets/pic0.jpg"),
         title: "Majestic Clouds",
@@ -95,7 +95,10 @@ const pics = [
 
 const Overview: FC = () => {
     const [post, setPost] = useState(-1)
+    const [del, setDel] = useState(false)
+
     const { pSection, setPSection } = useContext(ProfileContext)
+    const [pics, setPics] = useState(pictures)
 
     // Viewing the posts (on click)
     const overlay = document.getElementById("overlay3") as HTMLElement
@@ -138,8 +141,8 @@ const Overview: FC = () => {
                                         </div>
                                     </div>
                                     <div id="postActions">
-                                        <p onClick={() => reply(i)}>Reply</p>
-                                        <p onClick={() => remove(i)}>Remove</p>
+                                        <p onClick={() => reply(i, x)}>Reply</p>
+                                        <p onClick={() => removing(i, x)}>Remove</p>
                                     </div>
                                     {item.replies.length > 0 && <div id="replies">
                                         {item.replies.map((rep, idx) => (
@@ -174,12 +177,24 @@ const Overview: FC = () => {
     }
 
     // Comment actions
-    const reply = (i: number) => {
+    const reply = (i: number, x: number) => {
 
     }
 
-    const remove = (i: number) => {
+    // ask to remove comment
+    const confirm = document.getElementById("removeComment") as HTMLElement
+    const removal = (i: number, x: number) {
+        confirm?.classList.add("active")
+    }
 
+    // confirm comment removal
+    const remove = (i: number, x: number, conf: boolean) => {
+        confirm?.classList.remove("active")
+        if (conf) {
+            const copy = [...pics]
+            copy[i].comms.splice(x, 1)
+            setPics(copy)
+        }
     }
 
     return (
@@ -235,7 +250,7 @@ const Overview: FC = () => {
                 </Link>
             </div>
             <div id="ovContents">
-                <h2>Posts (8)</h2>
+                <h2>Posts ({pics.length})</h2>
                 <div id="allPics">
                     {pics.map((item, i) => (
                         <div key={i} id="post">
@@ -263,6 +278,17 @@ const Overview: FC = () => {
             </div>
             <div id="postView">
                 {enlarge(post)}
+            </div>
+            <div id="removeComment">
+                <h2>Remove this comment permanently?</h2>
+                <span>
+                    <button className="Button medButton" onClick={() => setDel(true)}>
+                        Yes
+                    </button>
+                    <button className="Button medButton" onClick={() => setDel(true)}>
+                        No
+                    </button>
+                </span>
             </div>
             <div id="overlay3" onClick={unlarge}>
                 <FontAwesomeIcon icon={faX} onClick={unlarge} />
