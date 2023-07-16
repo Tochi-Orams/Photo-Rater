@@ -18,7 +18,6 @@ const ProfilePage: FC = () => {
             act: document.getElementById("AC"),
             set: document.getElementById("ST")
         }
-        console.log(pSection)
         tabs.ovv?.classList.remove("active")
         tabs.act?.classList.remove("active")
         tabs.set?.classList.remove("active")

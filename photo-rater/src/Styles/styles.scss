@@ -1589,7 +1589,7 @@ nav {
 }
 #postView {
     position: absolute;
-    top: -8%;
+    top: calc(45% - 20vw);
     left: calc(50% - calc(65vw + 2rem)/2);
     opacity: 0;
     pointer-events: none;
@@ -1649,16 +1649,17 @@ nav {
 #postHeader div, #postHeader span {
     display: flex;
 }
-#postHeader p {
-    margin: 0 10px 0 0;
-}
-#postHeader div:nth-child(2) {
-    margin-top: 1rem;
-    justify-content: space-around;
-}
 #postHeader div {
     width: fit-content;
     margin: auto;
+}
+#postHeader p {
+    margin: 0 10px 0 0;
+}
+#starComm {
+    margin-top: 1rem !important;
+    width: 100% !important;
+    justify-content: space-between !important;
 }
 #postComments {
     height: calc(40vw - 107px - 1rem);
@@ -1683,6 +1684,8 @@ nav {
     padding: 1rem;
     margin: 1rem calc(1rem - 8px) 1rem 1rem;
     border-radius: 20px;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
+    transition: all 1s ease;
     @include themify($themes) {
         border: 1px solid themed('contrast');
         background: themed("innerBkg");
@@ -1697,11 +1700,79 @@ nav {
 .postComment p {
     margin-bottom: 0;
 }
+.postComment p:nth-of-type(2) {
+    color: #b4b4b4;
+}
+.postComment em {
+    font-style: normal;
+    cursor: pointer;
+    margin-right: 6px;
+    @include accentuate($accents) {
+        color: accented('mainColor');
+    }
+}
+.postComment.active {
+    @include accentuate($accents) {
+        box-shadow: 0 0 0 2px accented('mainColor');
+    }
+}
+.commReply {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    height: 0;
+    margin: 0;
+    border-radius: 10px;
+    margin: 0 1rem 0 auto;
+    padding: 0;
+    // overflow: hidden;
+    opacity: 0;
+    scroll-padding-bottom: 2rem;
+    @include themify($themes) {
+        background: themed('innerBkg');
+        border: 1px solid themed('contrast');
+    }
+}
+.commReply.active {
+    opacity: 1;
+    height: fit-content;
+    margin: 0 1rem 1rem auto;
+    padding: 10px 0 10px 10px;
+}
+.commReply.foc {
+    @include accentuate($accents) {
+        box-shadow: 0 0 0 2px accented('mainColor');
+    }
+}
+.commReply .Button {
+    border-radius: 10px;
+    margin: 0 10px 0 0.5rem;
+    padding: 0;
+    height: 28px;
+    margin: auto 10px;
+}
+.commReply .Button > * {
+    margin: 0 1rem 2px 1rem;
+    font-size: 1rem;
+}
+.replyTxt {
+    // 
+    outline: none;
+    border: none;
+    height: fit-content;
+    width: calc(100% - 98px);
+    font-size: 1rem;
+    resize: none;
+    margin-top: 3px;
+    @include themify($themes) {
+        background: themed('innerBkg');
+    }
+}
 #postActions {
     display: flex;
     justify-content: space-between;
     width: 40%;
-    margin-left: 50%;
+    margin: 0 0 1rem 50%;
     @include accentuate($accents) {
         color: accented("mainColor");
     }
@@ -1711,7 +1782,7 @@ nav {
     margin: -0.5rem 0 0;
 }
 #replies {
-    margin: -0.5rem 0 0 3rem;
+    margin: -1rem 0 30px 3rem;
     padding-top: 1.5rem;
     @include themify($themes) {
         border-left: 1px solid themed('contrast');
@@ -1730,10 +1801,10 @@ nav {
 #overlay3 {
     position: absolute;
     background: black;
-    width: 100vw;
-    height: 100vh;
-    top: -18%;
-    left: calc(50% - 50vw);
+    width: 105vw;
+    height: 105vh;
+    top: -19%;
+    left: calc(48% - 50vw);
     opacity: 0;
     pointer-events: none;
 }
@@ -1743,8 +1814,50 @@ nav {
 }
 #overlay3 > * {
     position: absolute;
-    top: 5%;
-    right: 5%;
+    top: 7%;
+    right: 7%;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+}
+#removeComment {
+    position: absolute;
+    top: 60%;
+    left: calc(50% - 150px);
+    width: 300px;
+    height: 180px;
+    border-radius: 20px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.8s ease-in-out;
+    z-index: 1000;
+    @include themify($themes) {
+        border: 1px solid themed('contrast');
+        background: themed("innerBkg");
+    }
+}
+#removeComment.active {
+    opacity: 1;
+    pointer-events: all;
+    top: calc(45% - 90px);
+}
+#removeComment span {
+    margin: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-around;
+}
+#emoji {
+    cursor: pointer;
+    margin: auto 10px auto 0;
+    position: relative;
+    @include accentuate($accents) {
+        color: accented("mainColor");
+    }
+}
+#emojiPicker {
+    position: absolute;
+    bottom: 180%;
 }
 
 /* Upload Page Styling _______________________________________________________ */
@@ -2749,15 +2862,15 @@ nav {
     }
 }
 
-  @keyframes spinMaster {
+@keyframes spinMaster {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
-  @keyframes spin1 {
+}
+@keyframes spin1 {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
-  @keyframes spin2 {
+}
+@keyframes spin2 {
     0% { transform: rotate(360deg); }
     100% { transform: rotate(0deg); }
-  }
+}
